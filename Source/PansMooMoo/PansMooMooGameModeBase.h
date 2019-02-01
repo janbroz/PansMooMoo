@@ -13,5 +13,6 @@ UCLASS()
 class PANSMOOMOO_API APansMooMooGameModeBase : public AGameModeBase
 {
 	GENERATED_BODY()
-	
+public:
+	APansMooMooGameModeBase();
 };
