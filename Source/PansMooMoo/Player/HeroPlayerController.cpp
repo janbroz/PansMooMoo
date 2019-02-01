@@ -2,6 +2,8 @@
 
 #include "HeroPlayerController.h"
 #include "Hero.h"
+#include "Buildings/Building.h"
+#include "Buildings/Store.h"
 
 AHeroPlayerController::AHeroPlayerController()
 {
@@ -51,6 +53,38 @@ void AHeroPlayerController::HorizontalMovement(float Amount)
 
 void AHeroPlayerController::LeftMouseButtonPressed()
 {
+	FHitResult Hit;
+	GetHitResultUnderCursor(ECollisionChannel::ECC_Camera, true, Hit);
+	if (Hit.bBlockingHit)
+	{
+		ABuilding* ClickedBuilding = Cast<ABuilding>(Hit.GetActor());
+		// Check if the player clicked a store or if he wants to attack.
+		if (ClickedBuilding)
+		{
+			// Is it a building what we clicked?
+			if (ClickedBuilding->IsPlayerCloseEnough(GetPawn()))
+			{
+				AStore* Store = Cast<AStore>(ClickedBuilding);
+				if (Store)
+				{
+					Store->ShowStoreWidget(this);
+				}
+
+				UE_LOG(LogTemp, Warning, TEXT("Player is close enough"));
+			}
+			else
+			{
+				UE_LOG(LogTemp, Warning, TEXT("You are too far away from the store"));
+			}
+		}
+		else
+		{
+			// It might be a unit
+
+			UE_LOG(LogTemp, Warning, TEXT("Nigga, you clicked something else"));
+		}
+	}
+
 
 }
 
