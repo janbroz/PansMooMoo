@@ -2,3 +2,9 @@
 
 #include "MooPlayerState.h"
 
+AMooPlayerState::AMooPlayerState()
+{
+	bAlwaysRelevant = true;
+	Gold = 10;
+}
+
