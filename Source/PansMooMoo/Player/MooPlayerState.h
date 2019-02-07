@@ -16,18 +16,26 @@ class PANSMOOMOO_API AMooPlayerState : public APlayerState
 public:
 	AMooPlayerState();
 	
+
+
+public:
+	UFUNCTION(BlueprintCallable)
+		bool BuyItem(int32 Price);
+
 public:
 	UPROPERTY(VisibleAnywhere)
 		uint32 bHasHeroSelected : 1;
 	UPROPERTY(VisibleAnywhere)
 		uint32 bHasHeroAlive : 1;
 	UPROPERTY(VisibleAnywhere)
-		uint32 Level;
+		int32 Level;
 	UPROPERTY(VisibleAnywhere)
-		uint32 CurrentExperience;
+		int32 CurrentExperience;
 	UPROPERTY(VisibleAnywhere)
-		uint32 Gold;
+		int32 Gold;
 	UPROPERTY(VisibleAnywhere)
-		uint32 SpecialCurrency;
+		int32 SpecialCurrency;
+
+	
 
 };

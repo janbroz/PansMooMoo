@@ -5,6 +5,9 @@
 #include "Player/MooPlayerState.h"
 #include "Player/Hero.h"
 #include "UObject/ConstructorHelpers.h"
+#include "TimerManager.h"
+#include "EngineUtils.h"
+#include "Enemies/Spawner.h"
 
 APansMooMooGameModeBase::APansMooMooGameModeBase()
 {
@@ -17,4 +20,29 @@ APansMooMooGameModeBase::APansMooMooGameModeBase()
 	PlayerStateClass = AMooPlayerState::StaticClass();
 
 	//DefaultPawnClass = AHero::StaticClass();
+}
+
+void APansMooMooGameModeBase::StartPlay()
+{
+	Super::StartPlay();
+
+	PrepareWave();
+}
+
+void APansMooMooGameModeBase::StartWave()
+{
+	for (TActorIterator<ASpawner> ActorItr(GetWorld()); ActorItr; ++ActorItr)
+	{
+		ASpawner* Spawner = *ActorItr;
+		if (Spawner)
+		{
+			Spawner->SpawnWave(CurrentWave);
+		}
+	}
+}
+
+void APansMooMooGameModeBase::PrepareWave()
+{
+	CurrentWave++;
+	GetWorldTimerManager().SetTimer(TimerHandleWave, this, &APansMooMooGameModeBase::StartWave, 20.f, true);
 }

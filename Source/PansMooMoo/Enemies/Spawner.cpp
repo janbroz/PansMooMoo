@@ -25,7 +25,7 @@ void ASpawner::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	GetWorldTimerManager().SetTimer(WaveTimerHandle, this, &ASpawner::SpawnWave, WaveCooldown, true, 15.f);
+	//GetWorldTimerManager().SetTimer(WaveTimerHandle, this, &ASpawner::SpawnWave, WaveCooldown, true, 15.f);
 }
 
 // Called every frame
@@ -34,17 +34,17 @@ void ASpawner::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
-void ASpawner::SpawnWave()
+void ASpawner::SpawnWave(int32 WaveNumber)
 {
-	if(CurrentWave >= MaxWaves)
+	EnemiesSpawned = 0;
+	SpawnMinions();
+	/*if(CurrentWave >= MaxWaves)
 	{
 		GetWorldTimerManager().ClearTimer(WaveTimerHandle);
 	}
 	else
 	{
-		EnemiesSpawned = 0;
-		SpawnMinions();
-	}
+	}*/
 }
 
 void ASpawner::SpawnMinions()
