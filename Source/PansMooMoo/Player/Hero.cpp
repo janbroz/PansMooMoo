@@ -3,6 +3,7 @@
 #include "Hero.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "Items/InventoryComponent.h"
 
 // Sets default values
 AHero::AHero()
@@ -22,6 +23,8 @@ AHero::AHero()
 
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	Camera->SetupAttachment(CameraArm, USpringArmComponent::SocketName);
+
+	InventoryComponent = CreateDefaultSubobject<UInventoryComponent>(TEXT("Inventory component"));
 }
 
 // Called when the game starts or when spawned

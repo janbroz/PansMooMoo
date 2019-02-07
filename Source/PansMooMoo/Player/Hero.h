@@ -32,5 +32,6 @@ public:
 	UPROPERTY(BlueprintReadWrite, Category = "PlayerInformation")
 		class USpringArmComponent* CameraArm;
 	
-
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Inventory information")
+		class UInventoryComponent* InventoryComponent;
 };

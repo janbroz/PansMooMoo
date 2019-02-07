@@ -13,5 +13,29 @@ UCLASS()
 class PANSMOOMOO_API AMooPlayerState : public APlayerState
 {
 	GENERATED_BODY()
+public:
+	AMooPlayerState();
 	
+
+
+public:
+	UFUNCTION(BlueprintCallable)
+		bool BuyItem(int32 Price);
+
+public:
+	UPROPERTY(VisibleAnywhere)
+		uint32 bHasHeroSelected : 1;
+	UPROPERTY(VisibleAnywhere)
+		uint32 bHasHeroAlive : 1;
+	UPROPERTY(VisibleAnywhere)
+		int32 Level;
+	UPROPERTY(VisibleAnywhere)
+		int32 CurrentExperience;
+	UPROPERTY(VisibleAnywhere)
+		int32 Gold;
+	UPROPERTY(VisibleAnywhere)
+		int32 SpecialCurrency;
+
+	
+
 };

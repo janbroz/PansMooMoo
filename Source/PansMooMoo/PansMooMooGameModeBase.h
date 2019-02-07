@@ -15,4 +15,15 @@ class PANSMOOMOO_API APansMooMooGameModeBase : public AGameModeBase
 	GENERATED_BODY()
 public:
 	APansMooMooGameModeBase();
+
+	virtual void StartPlay() override;
+
+protected:
+	void StartWave();
+	void PrepareWave();
+
+protected:
+	int32 CurrentWave;
+	FTimerHandle TimerHandleWave;
+	FTimerHandle TimerHandleMinionSpawn;
 };

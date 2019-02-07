@@ -4,10 +4,19 @@
 #include "Hero.h"
 #include "Buildings/Building.h"
 #include "Buildings/Store.h"
+#include "Enemies/Enemy.h"
+#include "Widgets/Player/HeroWidget.h"
+#include "UObject/ConstructorHelpers.h"
 
 AHeroPlayerController::AHeroPlayerController()
 {
 	bShowMouseCursor = true;
+
+	static ConstructorHelpers::FObjectFinder<UClass> HUDWidgetClass_BP(TEXT("/Game/UI/HUD/PlayerHUD.PlayerHUD_C"));
+	if (HUDWidgetClass_BP.Object)
+	{
+		HUDWidgetClass = HUDWidgetClass_BP.Object;
+	}
 }
 
 void AHeroPlayerController::SetupInputComponent()
@@ -25,6 +34,18 @@ void AHeroPlayerController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	AlignMouse();
+}
+
+void AHeroPlayerController::BeginPlay()
+{
+	if (HUDWidgetClass && IsLocalController())
+	{
+		HUDWidget = CreateWidget<UHeroWidget>(this, HUDWidgetClass);
+		if (HUDWidget)
+		{
+			HUDWidget->AddToViewport();
+		}
+	}
 }
 
 void AHeroPlayerController::VerticalMovement(float Amount)
@@ -53,6 +74,8 @@ void AHeroPlayerController::HorizontalMovement(float Amount)
 
 void AHeroPlayerController::LeftMouseButtonPressed()
 {
+	// This is coded for a single player session, have to add multiplayer
+	// and server validation for when other players are connecting.
 	FHitResult Hit;
 	GetHitResultUnderCursor(ECollisionChannel::ECC_Camera, true, Hit);
 	if (Hit.bBlockingHit)
@@ -79,6 +102,14 @@ void AHeroPlayerController::LeftMouseButtonPressed()
 		}
 		else
 		{
+			AEnemy* ClickedEnemy = Cast<AEnemy>(Hit.GetActor());
+			if (ClickedEnemy)
+			{
+				AttackEnemy(ClickedEnemy);
+				
+
+				
+			}
 			// It might be a unit
 
 			UE_LOG(LogTemp, Warning, TEXT("Nigga, you clicked something else"));
@@ -105,5 +136,32 @@ void AHeroPlayerController::AlignMouse()
 		HeroRot.Yaw = LookAtRot.Yaw;
 		SetControlRotation(HeroRot);
 	}
+}
+
+void AHeroPlayerController::AttackEnemy(AActor* Enemy)
+{
+	if (Role < ROLE_Authority)
+	{
+		Server_AttackEnemy(Enemy);
+	}
+	else
+	{
+		FVector Difference = Enemy->GetActorLocation() - GetPawn()->GetActorLocation();
+		float Distance = Difference.Size();
+		if (Distance <= 400.f)
+		{
+			Enemy->Destroy();
+		}
+	}
+}
+
+void AHeroPlayerController::Server_AttackEnemy_Implementation(AActor* Enemy)
+{
+	AttackEnemy(Enemy);
+}
+
+bool AHeroPlayerController::Server_AttackEnemy_Validate(AActor* Enemy)
+{
+	return true;
 }
 

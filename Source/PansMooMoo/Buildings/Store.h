@@ -27,4 +27,6 @@ public:
 		TSubclassOf<class UUserWidget> StoreWidgetClass;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Widgets")
 		class UUserWidget* StoreWidget;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Widgets")
+		class UDataTable* ItemsDataTable;
 };
